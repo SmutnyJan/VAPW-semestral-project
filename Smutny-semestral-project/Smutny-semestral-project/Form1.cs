@@ -1,5 +1,6 @@
 using smutny_carwash;
 using System.Xml.Linq;
+using static smutny_carwash.CarGoofer;
 
 namespace Smutny_semestral_project
 {
@@ -14,46 +15,194 @@ namespace Smutny_semestral_project
                 _isCarReady = value;
                 if (value)
                 {
-                    StreetLightRed.Checked = false;
-                    StreetLightGreen.Checked = true;
-                    CarEnteringButton.Enabled = true;
+                    this.Invoke(new Action(() =>
+                    {
+                        StreetLightRed.Checked = false;
+                        StreetLightGreen.Checked = true;
+                        CarEnteringButton.Enabled = true;
+                    }));
+                }
+                else
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        StreetLightRed.Checked = true;
+                        StreetLightGreen.Checked = false;
+                        CarEnteringButton.Enabled = false;
+                    }));
                 }
             }
         }
+
+        private bool _isTimerUsed = false;
+        private bool _carInside = false;
+        public CarGoofer CarGoofer { get; set; }
+
+        public int FrontDoorMaxHeight { get; set; }
+        public int BackDoorMaxHeight { get; set; }
+        public int CarInsideXLocation { get; set; }
+        public int CarOutsideXLocation { get; set; }
+        public int GoofedCarWidth { get; set; }
+
 
 
 
         public Form1()
         {
-            CarGoofer car = new CarGoofer();
-            car.OnFrontDoorStateChange += Car_OnFrontDoorStateChange;
             InitializeComponent();
+            FrontDoorMaxHeight = FrontDoor.Size.Height;
+            BackDoorMaxHeight = BackDoor.Size.Height;
+            CarInsideXLocation = 357;
+            CarOutsideXLocation = 750;
+            GoofedCarWidth = CarPictureBox.Width + 100;
+            CarGoofer = new CarGoofer(FrontDoorMaxHeight, BackDoorMaxHeight, CarPictureBox.Location.X, CarInsideXLocation, CarOutsideXLocation, CarPictureBox.Width, GoofedCarWidth);
+            
+            var form = new VisualUpdateForm();
+            var result = form.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                _setVisualUpdate(form.IsEventBased);
+            }
+            else
+            {
+                _setVisualUpdate(true);
+            }
+
+
         }
 
-        private void Car_OnFrontDoorStateChange(object sender, int doorHeight)
+        private void CarGoofer_OnCarWidthChange(object sender, int carWidth)
         {
-            throw new NotImplementedException();
+            this.Invoke(new Action(() =>
+            {
+                CarPictureBox.Size = new Size(carWidth, CarPictureBox.Size.Height);
+            }));
+
+            if (carWidth == GoofedCarWidth)
+            {
+                this.Invoke(new Action(() =>
+                {
+                    CarLeavingButton.Enabled = true;
+                }));
+            }
+
         }
 
-        private void StreetLightRed_CheckedChanged(object sender, EventArgs e)
+        private void CarGoofer_OnCarLocationChange(object sender, int carXLocation)
         {
+            this.Invoke(new Action(() =>
+            {
+                CarPictureBox.Location = new Point(carXLocation, CarPictureBox.Location.Y);
+            }));
 
+            if (carXLocation == CarInsideXLocation)
+            {
+                this.Invoke(new Action(() =>
+                {
+                    GoofCarButton.Enabled = true;
+                }));
+            }
+
+
+        }
+
+        private void Car_OnFrontDoorHeightChange(object sender, int doorHeight)
+        {
+            this.Invoke(new Action(() =>
+            {
+                FrontDoor.Size = new Size(FrontDoor.Size.Width, doorHeight);
+            }));
+            if (doorHeight == CarGoofer.OPEN_GATE_TOLERATION)
+            {
+                IsCarReady = true;
+            }
+            else if (doorHeight == FrontDoorMaxHeight)
+            {
+                IsCarReady = false;
+            }
+        }
+
+        private void Car_OnBackDoorHeightChange(object sender, int doorHeight)
+        {
+            this.Invoke(new Action(() =>
+            {
+                BackDoor.Size = new Size(BackDoor.Size.Width, doorHeight);
+            }));
         }
 
         private void CarLeavingButton_Click(object sender, EventArgs e)
         {
-            //FrontDoor.Size = new Size(FrontDoor.Size.Width, 50);
+            CarGoofer.ChangeDoorState(CarGoofer.DoorState.Open, CarGoofer.DoorLocation.Back);
+
         }
 
         private void CarEnteringButton_Click(object sender, EventArgs e)
         {
-            
+            CarEnteringButton.Enabled = false;
+            CarGoofer.ChangeCarLocation(CarGoofer.CarLocation.Inside);
+
+
         }
 
         private void CarReadyButton_Click(object sender, EventArgs e)
         {
-            IsCarReady = true;
             CarReadyButton.Enabled = false;
+            CarGoofer.ChangeDoorState(CarGoofer.DoorState.Open, CarGoofer.DoorLocation.Front);
+        }
+
+        private void GoofCarButton_Click(object sender, EventArgs e)
+        {
+            CarGoofer.ChangeDoorState(CarGoofer.DoorState.Close, CarGoofer.DoorLocation.Front);
+            GoofCarButton.Enabled = false;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+
+            FrontDoor.Size = new Size(FrontDoor.Size.Width, CarGoofer.FrontDoorHeight);
+            if (CarGoofer.FrontDoorHeight == CarGoofer.OPEN_GATE_TOLERATION && !IsCarReady)
+            {
+                IsCarReady = true;
+            }
+            else if (CarGoofer.FrontDoorHeight == FrontDoorMaxHeight)
+            {
+                IsCarReady = false;
+            }
+
+            BackDoor.Size = new Size(BackDoor.Size.Width, CarGoofer.BackDoorHeight);
+
+
+
+            CarPictureBox.Location = new Point(CarGoofer.CarXLocation, CarPictureBox.Location.Y);
+            if (CarGoofer.CarXLocation == CarInsideXLocation && !GoofCarButton.Enabled && !_carInside)
+            {
+                _carInside = true;
+                GoofCarButton.Enabled = true;
+            }
+
+
+            CarPictureBox.Size = new Size(CarGoofer.CarWidth, CarPictureBox.Size.Height);
+            if (CarGoofer.CarWidth == GoofedCarWidth && !CarLeavingButton.Enabled)
+            {
+
+                CarLeavingButton.Enabled = true;
+            }
+
+        }
+
+        private void _setVisualUpdate(bool isEventBased)
+        {
+            if (!isEventBased)
+            {
+                Timer.Enabled = true;
+            }
+            else
+            {
+                CarGoofer.OnFrontDoorHeightChange += Car_OnFrontDoorHeightChange;
+                CarGoofer.OnBackDoorHeightChange += Car_OnBackDoorHeightChange;
+                CarGoofer.OnCarLocationChange += CarGoofer_OnCarLocationChange;
+                CarGoofer.OnCarWidthChange += CarGoofer_OnCarWidthChange;
+            }
         }
     }
 }
