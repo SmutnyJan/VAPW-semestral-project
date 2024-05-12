@@ -17,8 +17,8 @@ namespace Smutny_semestral_project
                 {
                     this.Invoke(new Action(() =>
                     {
-                        StreetLightRed.Checked = false;
-                        StreetLightGreen.Checked = true;
+                        InStreetLightRed.Checked = false;
+                        InStreetLightGreen.Checked = true;
                         CarEnteringButton.Enabled = true;
                     }));
                 }
@@ -26,16 +26,16 @@ namespace Smutny_semestral_project
                 {
                     this.Invoke(new Action(() =>
                     {
-                        StreetLightRed.Checked = true;
-                        StreetLightGreen.Checked = false;
+                        InStreetLightRed.Checked = true;
+                        InStreetLightGreen.Checked = false;
                         CarEnteringButton.Enabled = false;
                     }));
                 }
             }
         }
 
-        private bool _isTimerUsed = false;
         private bool _carInside = false;
+        private bool _carLeaving = false;
         public CarGoofer CarGoofer { get; set; }
 
         public int FrontDoorMaxHeight { get; set; }
@@ -53,7 +53,7 @@ namespace Smutny_semestral_project
             FrontDoorMaxHeight = FrontDoor.Size.Height;
             BackDoorMaxHeight = BackDoor.Size.Height;
             CarInsideXLocation = 357;
-            CarOutsideXLocation = 750;
+            CarOutsideXLocation = 800;
             GoofedCarWidth = CarPictureBox.Width + 100;
             CarGoofer = new CarGoofer(FrontDoorMaxHeight, BackDoorMaxHeight, CarPictureBox.Location.X, CarInsideXLocation, CarOutsideXLocation, CarPictureBox.Width, GoofedCarWidth);
             
@@ -104,6 +104,7 @@ namespace Smutny_semestral_project
             }
 
 
+
         }
 
         private void Car_OnFrontDoorHeightChange(object sender, int doorHeight)
@@ -127,20 +128,24 @@ namespace Smutny_semestral_project
             this.Invoke(new Action(() =>
             {
                 BackDoor.Size = new Size(BackDoor.Size.Width, doorHeight);
+                if (CarGoofer.BackDoorHeight == CarGoofer.OPEN_GATE_TOLERATION)
+                {
+                    OutStreetLightGreen.Checked = true;
+                    OutStreetLightRed.Checked = false;
+                }
             }));
         }
 
         private void CarLeavingButton_Click(object sender, EventArgs e)
         {
             CarGoofer.ChangeDoorState(CarGoofer.DoorState.Open, CarGoofer.DoorLocation.Back);
-
+            CarLeavingButton.Enabled = false;
         }
 
         private void CarEnteringButton_Click(object sender, EventArgs e)
         {
             CarEnteringButton.Enabled = false;
             CarGoofer.ChangeCarLocation(CarGoofer.CarLocation.Inside);
-
 
         }
 
@@ -170,6 +175,11 @@ namespace Smutny_semestral_project
             }
 
             BackDoor.Size = new Size(BackDoor.Size.Width, CarGoofer.BackDoorHeight);
+            if (CarGoofer.BackDoorHeight == CarGoofer.OPEN_GATE_TOLERATION)
+            {
+                OutStreetLightGreen.Checked = true;
+                OutStreetLightRed.Checked = false;
+            }
 
 
 
@@ -182,10 +192,10 @@ namespace Smutny_semestral_project
 
 
             CarPictureBox.Size = new Size(CarGoofer.CarWidth, CarPictureBox.Size.Height);
-            if (CarGoofer.CarWidth == GoofedCarWidth && !CarLeavingButton.Enabled)
+            if (CarGoofer.CarWidth == GoofedCarWidth && !CarLeavingButton.Enabled && !_carLeaving)
             {
-
                 CarLeavingButton.Enabled = true;
+                _carLeaving = true;
             }
 
         }

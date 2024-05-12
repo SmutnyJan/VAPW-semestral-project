@@ -31,8 +31,8 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             CarEnteringButton = new Button();
-            StreetLightRed = new RadioButton();
-            StreetLightGreen = new RadioButton();
+            InStreetLightRed = new RadioButton();
+            InStreetLightGreen = new RadioButton();
             CarLeavingButton = new Button();
             FrontDoor = new Panel();
             CarReadyButton = new Button();
@@ -40,56 +40,58 @@
             CarPictureBox = new PictureBox();
             GoofCarButton = new Button();
             Timer = new System.Windows.Forms.Timer(components);
+            OutStreetLightGreen = new RadioButton();
+            OutStreetLightRed = new RadioButton();
+            groupBox1 = new GroupBox();
+            groupBox2 = new GroupBox();
             ((System.ComponentModel.ISupportInitialize)CarPictureBox).BeginInit();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
             SuspendLayout();
             // 
             // CarEnteringButton
             // 
             CarEnteringButton.Enabled = false;
-            CarEnteringButton.Location = new Point(130, 57);
-            CarEnteringButton.Margin = new Padding(3, 2, 3, 2);
+            CarEnteringButton.Location = new Point(144, 76);
             CarEnteringButton.Name = "CarEnteringButton";
-            CarEnteringButton.Size = new Size(82, 22);
+            CarEnteringButton.Size = new Size(94, 29);
             CarEnteringButton.TabIndex = 0;
             CarEnteringButton.Text = "->";
             CarEnteringButton.UseVisualStyleBackColor = true;
             CarEnteringButton.Click += CarEnteringButton_Click;
             // 
-            // StreetLightRed
+            // InStreetLightRed
             // 
-            StreetLightRed.AutoSize = true;
-            StreetLightRed.BackColor = Color.Red;
-            StreetLightRed.Checked = true;
-            StreetLightRed.Enabled = false;
-            StreetLightRed.Location = new Point(237, 32);
-            StreetLightRed.Margin = new Padding(3, 2, 3, 2);
-            StreetLightRed.Name = "StreetLightRed";
-            StreetLightRed.Padding = new Padding(4);
-            StreetLightRed.Size = new Size(22, 21);
-            StreetLightRed.TabIndex = 2;
-            StreetLightRed.TabStop = true;
-            StreetLightRed.UseVisualStyleBackColor = false;
+            InStreetLightRed.AutoSize = true;
+            InStreetLightRed.BackColor = Color.Red;
+            InStreetLightRed.Checked = true;
+            InStreetLightRed.Enabled = false;
+            InStreetLightRed.Location = new Point(0, 46);
+            InStreetLightRed.Name = "InStreetLightRed";
+            InStreetLightRed.Padding = new Padding(5);
+            InStreetLightRed.Size = new Size(27, 26);
+            InStreetLightRed.TabIndex = 2;
+            InStreetLightRed.TabStop = true;
+            InStreetLightRed.UseVisualStyleBackColor = false;
             // 
-            // StreetLightGreen
+            // InStreetLightGreen
             // 
-            StreetLightGreen.AutoSize = true;
-            StreetLightGreen.BackColor = Color.LawnGreen;
-            StreetLightGreen.Enabled = false;
-            StreetLightGreen.Location = new Point(237, 57);
-            StreetLightGreen.Margin = new Padding(3, 2, 3, 2);
-            StreetLightGreen.Name = "StreetLightGreen";
-            StreetLightGreen.Padding = new Padding(4);
-            StreetLightGreen.Size = new Size(22, 21);
-            StreetLightGreen.TabIndex = 3;
-            StreetLightGreen.UseVisualStyleBackColor = false;
+            InStreetLightGreen.AutoSize = true;
+            InStreetLightGreen.BackColor = Color.LawnGreen;
+            InStreetLightGreen.Enabled = false;
+            InStreetLightGreen.Location = new Point(0, 14);
+            InStreetLightGreen.Name = "InStreetLightGreen";
+            InStreetLightGreen.Padding = new Padding(5);
+            InStreetLightGreen.Size = new Size(27, 26);
+            InStreetLightGreen.TabIndex = 3;
+            InStreetLightGreen.UseVisualStyleBackColor = false;
             // 
             // CarLeavingButton
             // 
             CarLeavingButton.Enabled = false;
-            CarLeavingButton.Location = new Point(556, 57);
-            CarLeavingButton.Margin = new Padding(3, 2, 3, 2);
+            CarLeavingButton.Location = new Point(531, 76);
             CarLeavingButton.Name = "CarLeavingButton";
-            CarLeavingButton.Size = new Size(82, 22);
+            CarLeavingButton.Size = new Size(92, 31);
             CarLeavingButton.TabIndex = 4;
             CarLeavingButton.Text = "->";
             CarLeavingButton.UseVisualStyleBackColor = true;
@@ -98,18 +100,16 @@
             // FrontDoor
             // 
             FrontDoor.BackColor = Color.Black;
-            FrontDoor.Location = new Point(209, 115);
-            FrontDoor.Margin = new Padding(3, 2, 3, 2);
+            FrontDoor.Location = new Point(239, 153);
             FrontDoor.Name = "FrontDoor";
-            FrontDoor.Size = new Size(50, 200);
+            FrontDoor.Size = new Size(57, 267);
             FrontDoor.TabIndex = 5;
             // 
             // CarReadyButton
             // 
-            CarReadyButton.Location = new Point(30, 57);
-            CarReadyButton.Margin = new Padding(3, 2, 3, 2);
+            CarReadyButton.Location = new Point(34, 76);
             CarReadyButton.Name = "CarReadyButton";
-            CarReadyButton.Size = new Size(82, 22);
+            CarReadyButton.Size = new Size(94, 29);
             CarReadyButton.TabIndex = 0;
             CarReadyButton.Text = "Car ready";
             CarReadyButton.UseVisualStyleBackColor = true;
@@ -118,28 +118,29 @@
             // BackDoor
             // 
             BackDoor.BackColor = Color.Black;
-            BackDoor.Location = new Point(588, 115);
-            BackDoor.Margin = new Padding(3, 2, 3, 2);
+            BackDoor.Location = new Point(672, 153);
             BackDoor.Name = "BackDoor";
-            BackDoor.Size = new Size(50, 200);
+            BackDoor.Size = new Size(57, 267);
             BackDoor.TabIndex = 6;
             // 
             // CarPictureBox
             // 
             CarPictureBox.BackgroundImage = (Image)resources.GetObject("CarPictureBox.BackgroundImage");
             CarPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
-            CarPictureBox.Location = new Point(30, 264);
+            CarPictureBox.Location = new Point(34, 352);
+            CarPictureBox.Margin = new Padding(3, 4, 3, 4);
             CarPictureBox.Name = "CarPictureBox";
-            CarPictureBox.Size = new Size(125, 51);
+            CarPictureBox.Size = new Size(143, 68);
             CarPictureBox.TabIndex = 7;
             CarPictureBox.TabStop = false;
             // 
             // GoofCarButton
             // 
             GoofCarButton.Enabled = false;
-            GoofCarButton.Location = new Point(373, 57);
+            GoofCarButton.Location = new Point(426, 76);
+            GoofCarButton.Margin = new Padding(3, 4, 3, 4);
             GoofCarButton.Name = "GoofCarButton";
-            GoofCarButton.Size = new Size(75, 23);
+            GoofCarButton.Size = new Size(86, 31);
             GoofCarButton.TabIndex = 8;
             GoofCarButton.Text = "Goof car";
             GoofCarButton.UseVisualStyleBackColor = true;
@@ -150,33 +151,82 @@
             Timer.Interval = 1;
             Timer.Tick += Timer_Tick;
             // 
+            // OutStreetLightGreen
+            // 
+            OutStreetLightGreen.AutoSize = true;
+            OutStreetLightGreen.BackColor = Color.Lime;
+            OutStreetLightGreen.Enabled = false;
+            OutStreetLightGreen.Location = new Point(0, 12);
+            OutStreetLightGreen.Name = "OutStreetLightGreen";
+            OutStreetLightGreen.Padding = new Padding(5);
+            OutStreetLightGreen.Size = new Size(27, 26);
+            OutStreetLightGreen.TabIndex = 9;
+            OutStreetLightGreen.UseVisualStyleBackColor = false;
+            // 
+            // OutStreetLightRed
+            // 
+            OutStreetLightRed.AutoSize = true;
+            OutStreetLightRed.BackColor = Color.Red;
+            OutStreetLightRed.Checked = true;
+            OutStreetLightRed.Enabled = false;
+            OutStreetLightRed.Location = new Point(0, 44);
+            OutStreetLightRed.Name = "OutStreetLightRed";
+            OutStreetLightRed.Padding = new Padding(5);
+            OutStreetLightRed.Size = new Size(27, 26);
+            OutStreetLightRed.TabIndex = 10;
+            OutStreetLightRed.TabStop = true;
+            OutStreetLightRed.UseVisualStyleBackColor = false;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(InStreetLightGreen);
+            groupBox1.Controls.Add(InStreetLightRed);
+            groupBox1.Location = new Point(244, 30);
+            groupBox1.Name = "groupBox1";
+            groupBox1.RightToLeft = RightToLeft.Yes;
+            groupBox1.Size = new Size(29, 77);
+            groupBox1.TabIndex = 11;
+            groupBox1.TabStop = false;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(OutStreetLightGreen);
+            groupBox2.Controls.Add(OutStreetLightRed);
+            groupBox2.Location = new Point(672, 44);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(30, 76);
+            groupBox2.TabIndex = 12;
+            groupBox2.TabStop = false;
+            // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(700, 338);
+            ClientSize = new Size(800, 451);
+            Controls.Add(groupBox2);
+            Controls.Add(groupBox1);
             Controls.Add(GoofCarButton);
             Controls.Add(CarPictureBox);
             Controls.Add(BackDoor);
             Controls.Add(CarReadyButton);
             Controls.Add(FrontDoor);
             Controls.Add(CarLeavingButton);
-            Controls.Add(StreetLightGreen);
-            Controls.Add(StreetLightRed);
             Controls.Add(CarEnteringButton);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "Form1";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)CarPictureBox).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
         private Button CarEnteringButton;
-        private RadioButton StreetLightRed;
-        private RadioButton StreetLightGreen;
+        private RadioButton InStreetLightRed;
+        private RadioButton InStreetLightGreen;
         private Button CarLeavingButton;
         private Panel FrontDoor;
         private Button CarReadyButton;
@@ -184,5 +234,9 @@
         private PictureBox CarPictureBox;
         private Button GoofCarButton;
         private System.Windows.Forms.Timer Timer;
+        private RadioButton OutStreetLightGreen;
+        private RadioButton OutStreetLightRed;
+        private GroupBox groupBox1;
+        private GroupBox groupBox2;
     }
 }
